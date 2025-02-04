@@ -1,11 +1,11 @@
 #include "pico/stdlib.h"
-#include "hardware/timer.h"  // Biblioteca para temporizadores
+#include "hardware/timer.h" 
 
 // Definindo os pinos dos LEDs e do botão
-#define LED_AZUL       11
-#define LED_VERMELHO   12
-#define LED_VERDE      13
-#define BOTAO           5
+#define LED_VERMELHO   11   // O vermelho está no pino 11
+#define LED_AMARELO    12   // O amarelo está no pino 12
+#define LED_VERDE      13   // O verde está no pino 13
+#define BOTAO           5   // O botão está no pino 5
 
 // Variável de controle do estado dos LEDs
 volatile int estado = 0;
@@ -14,20 +14,20 @@ volatile bool aguardando = false;  // Variável para indicar se a sequência est
 // Função de callback para alternar os LEDs
 bool turn_off_callback(struct repeating_timer *t) {
     if (estado == 0) {
-        gpio_put(LED_AZUL, 1);
         gpio_put(LED_VERMELHO, 1);
+        gpio_put(LED_AMARELO, 1);
         gpio_put(LED_VERDE, 1);
     } else if (estado == 1) {
-        gpio_put(LED_AZUL, 0);
-        gpio_put(LED_VERMELHO, 1);
+        gpio_put(LED_VERMELHO, 0);
+        gpio_put(LED_AMARELO, 1);
         gpio_put(LED_VERDE, 1);
     } else if (estado == 2) {
-        gpio_put(LED_AZUL, 0);
         gpio_put(LED_VERMELHO, 0);
+        gpio_put(LED_AMARELO, 0);
         gpio_put(LED_VERDE, 1);
     } else if (estado == 3) {
-        gpio_put(LED_AZUL, 0);
         gpio_put(LED_VERMELHO, 0);
+        gpio_put(LED_AMARELO, 0);
         gpio_put(LED_VERDE, 0);
         aguardando = false; // Sequência finalizada, botão pode ser pressionado novamente
         return false;  // Parar o temporizador
@@ -42,8 +42,8 @@ void verificar_botao(uint gpio, uint32_t events) {
     if (gpio == BOTAO && !aguardando) { // Só inicia a sequência se aguardando for falso
         aguardando = true; // Bloqueia o botão até a sequência terminar
         estado = 0; // Começa com todos os LEDs ligados
-        gpio_put(LED_AZUL, 1);
         gpio_put(LED_VERMELHO, 1);
+        gpio_put(LED_AMARELO, 1);
         gpio_put(LED_VERDE, 1);
 
         // Adiciona o temporizador para alternar os LEDs
@@ -55,14 +55,14 @@ int main() {
     // Inicializa o sistema serial e os pinos dos LEDs
     stdio_init_all();
 
-    gpio_init(LED_AZUL);
     gpio_init(LED_VERMELHO);
+    gpio_init(LED_AMARELO);
     gpio_init(LED_VERDE);
     gpio_init(BOTAO);
 
     // Configura os pinos dos LEDs como saída
-    gpio_set_dir(LED_AZUL, GPIO_OUT);
     gpio_set_dir(LED_VERMELHO, GPIO_OUT);
+    gpio_set_dir(LED_AMARELO, GPIO_OUT);
     gpio_set_dir(LED_VERDE, GPIO_OUT);
 
     // Configura o pino do botão como entrada e ativa o pull-up interno
