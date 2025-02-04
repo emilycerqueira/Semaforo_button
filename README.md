@@ -1,5 +1,7 @@
 # Sistema de Temporização com LEDs e Botão 🚦
 
+**Desenvolvido por Emily Cerqueira**
+
 Este projeto implementa um sistema de temporização utilizando o microcontrolador Raspberry Pi Pico, três LEDs (vermelho, amarelo e verde), e um botão. O código foi desenvolvido em C, utilizando a ferramenta Pico SDK.
 
 📋 **Descrição do Projeto**
